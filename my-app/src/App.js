@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useState } from "react";
+
 function App() {
   var name = "shafin";
   var obj = {
@@ -30,6 +33,8 @@ function App() {
   // console.log(courses_names);
   return (
     <div>
+      <Count></Count>
+
       <GetCourse
         name={course_name[0].name}
         price={course_name[0].price}
@@ -70,6 +75,7 @@ function App() {
       <Prechase name={course[1]} price={price[1]}></Prechase>
       <Prechase name={course[2]} price={price[2]}></Prechase>
       <Prechase name={course[3]} price={price[3]}></Prechase>
+      <User></User>
     </div>
   );
 }
@@ -113,6 +119,57 @@ function Prechase(props) {
       <h1>Price : {props.price} </h1>
       <button>Buy now </button>
     </div>
+  );
+}
+
+function Count() {
+  const [count, setCount] = useState(0);
+
+  const HandleButton = () => {
+    if (count == 0) {
+      const newCount = count + 1;
+      setCount(newCount);
+    } else {
+      console.log("sry");
+    }
+  };
+
+  const DislikeHandleButton = () => {
+    const dislike = count - 1;
+    setCount(dislike);
+  };
+  return (
+    <>
+      <h1>Count : {count} </h1>
+      <button onClick={HandleButton}>Like ❤</button>
+      <button onClick={DislikeHandleButton}>Dislike ⛏</button>
+    </>
+  );
+}
+
+function User() {
+  const [user, Setuser] = useState([]);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => Setuser(data));
+  }, []);
+
+  return (
+    <>
+      <h1>Dynamic data Name and length:{user.length} </h1>
+      <ul>
+        {user.map((user) => (
+          <li>{user.name}</li>
+        ))}
+      </ul>
+      <h2>Dynamic Email : </h2>
+      <ul>
+        {user.map((user) => (
+          <li> {user.email}</li>
+        ))}
+      </ul>
+    </>
   );
 }
 
